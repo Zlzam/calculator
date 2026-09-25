@@ -9,28 +9,40 @@ class CalculatorTest {
     private Calculator calculator;
 
     @BeforeEach
-    void setUp() { // Create object before compilation
+    void setUp() { // Create object before each test
         calculator = new Calculator();
     }
 
-    /*
-     * testCalc() test method
-     */
+    
+
+    /*Above is original repository setup, below is my additions. <-------
+    * Note on double/string usage:
+        Confirmed first number must be a double and the second must be a string by flipping the double and string in the call. 
+        IDE Fault resulted, so I will be using a double for the first variable, and a string for the second one.
+    */
+
+    //Testing DIV/0
     @Test
-    void testCalc() {
-        double first = 3;
-        String second = "5";
-
-        try {
-            Assertions.assertEquals(8, calculator.calc(first, second, '+'));
-            Assertions.assertEquals(-2, calculator.calc(first, second, '-'));
-            Assertions.assertEquals(15, calculator.calc(first, second, '*'));
-            Assertions.assertEquals(0.6, calculator.calc(first, second, '/'));
-            Assertions.assertEquals(3d, calculator.calc(first, second, '%'));
-            Assertions.assertEquals(243, calculator.calc(first, second, '^'));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    void divZeroTest() {
+        double result = calculator.calc (1, "0", '/');
+        Assertions.assertEquals(Double.POSITIVE_INFINITY,result);
     }
+
+    //Boundary testing use of Parse.Double
+    //Test of specified max
+    @Test
+    void testParseDoubleMax() {
+      
+        Assertions.assertEquals(1.7976931348623157E+308, calculator.calc(0, "1.7976931348623157E+308", '+'));
+    }
+    //Add 1 to max specification should result in no change to expectation
+    @Test
+        void testParseDoubleMaxPlus1() {
+      
+        Assertions.assertEquals(1.7976931348623157E+308, calculator.calc(1, "1.7976931348623157E+308", '+'));
+    }
+
+
+
 }
+
