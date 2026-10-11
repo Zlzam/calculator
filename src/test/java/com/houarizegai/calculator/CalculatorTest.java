@@ -15,10 +15,7 @@ class CalculatorTest {
 
     
 
-    /*Above is original repository setup, below is my additions. <-------
-    * Note on double/string usage:
-        Confirmed first number must be a double and the second must be a string by flipping the double and string in the call. 
-        IDE Fault resulted, so I will be using a double for the first variable, and a string for the second one.
+    /*Above is original repository setup, below are my additions. <-------
     */
 
     //Testing DIV/0
@@ -27,7 +24,11 @@ class CalculatorTest {
         double result = calculator.calc (1, "0", '/');
         Assertions.assertEquals(Double.POSITIVE_INFINITY,result);
     }
-
+    //Testing normal division
+    @Test
+    void divNormTest() {
+        Assertions.assertEquals(10, calculator.calc(20, "2", '/'));
+    }
     //Boundary testing use of Parse.Double
     //Test of specified max
     @Test
@@ -41,8 +42,47 @@ class CalculatorTest {
       
         Assertions.assertEquals(1.7976931348623157E+308, calculator.calc(1, "1.7976931348623157E+308", '+'));
     }
+        //Test default case of calc()
+    @Test
+        void calcDefaultTest() {
+        //Default
+        Assertions.assertEquals(5, calculator.calc(-255, "5", '.'));
+    }
+    //Test x-y  case of calc()
+    @Test
+        void calcMinusTest() {
+        
+        Assertions.assertEquals(0, calculator.calc(1.7976931348623157E+308, "1.7976931348623157E+308", '-'));
+        }
+    //Test x*y of calc()
+    @Test
+        void calcMultTest() {
+        
+        Assertions.assertEquals(257, calculator.calc(51.4, "5", '*'));
+        }
+    //Test x%y of calc()
+    @Test
+        void calcModTest() {
+        
+        Assertions.assertEquals(-1, calculator.calc(-256, "5", '%'));
+        }
 
-
+        //Test .pow of calc()
+    @Test
+        void calcPowTest() {
+        // NaN result
+        Assertions.assertEquals(Double.NaN, calculator.calc(-2, "0.5", '^'));
+        // Expect infinity
+        Assertions.assertEquals(Double.POSITIVE_INFINITY, calculator.calc(10, "309", '^'));
+        Assertions.assertEquals(Double.NEGATIVE_INFINITY, calculator.calc(-10, "309", '^'));
+    }
+        //Test for string input
+    @Test
+        void calcAbcTest() {
+            Assertions.assertThrows(NumberFormatException.class, () -> calculator.calc(10, "abc", '+'));
+        }
+    
+    
 
 }
 
